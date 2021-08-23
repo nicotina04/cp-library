@@ -36,15 +36,8 @@ public:
     if (l <= start && end <= r) {
       lazy[node] += val;
       propa(node, start, end);
-
-      if (start != end) {
-        lazy[node * 2] += lazy[node];
-        lazy[node * 2 + 1] += lazy[node];
-      }
-
       return;
     }
-
     int m = mid(start, end);
     add(node * 2, start, m, l, r, val);
     add(node * 2 + 1, m + 1, end, l, r, val);
