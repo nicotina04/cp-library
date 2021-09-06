@@ -3,7 +3,7 @@
 using namespace std;
 
 #define NODE_MAX 501
-vector<vector<pair<int, int>>> graph;
+vector<pair<int, int>> graph[NODE_MAX];
 long long dist[NODE_MAX];
 int node_cnt[NODE_MAX];
 bool inq[NODE_MAX];
