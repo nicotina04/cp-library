@@ -13,7 +13,7 @@ private:
   };
   void update(node *x) {
     x->cnt = 1;
-    x->sum = x->min_key = x->max_key = x->key;
+    x->sum = x->key;
     if (x->l) {
       x->cnt += x->l->cnt;
       x->sum += x->l->sum;
