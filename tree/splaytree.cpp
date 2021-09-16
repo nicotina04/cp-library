@@ -179,14 +179,16 @@ public:
     auto limit = numeric_limits<T>::min();
     root = x = new node(limit, nullptr);
     // ptr[0] = root;
-    x->cnt = n + 2;
     for (int i = 1; i <= n; ++i) {
-      ptr[i] = x->r = new node(i, x);
+      x->r = new node(i, x);
       x = x->r;
-      x->cnt = n - i + 2;
+      // ptr[i] = x;
     }
     x->r = new node(-limit, x);
-    x->r->cnt = 1;
+    while (n--) {
+      update(x);
+      x = x->p;
+    }
     // prt[n + 1] = x->r;
     // for (int i = n; i >= 1; --i) update(ptr[i]);
     // splay(ptr[n / 2]);
