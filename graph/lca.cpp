@@ -7,9 +7,11 @@ using namespace std;
 int spas[SPAS_LOG][SPAS_NODE];
 int h[SPAS_NODE];
 void do_spas() {
-  for (int i = 1; i < SPAS_LOG; ++i)
-    for (int j = 1; j < SPAS_NODE; ++j)
+  for (int i = 1; i < SPAS_LOG; ++i) {
+    for (int j = 1; j < SPAS_NODE; ++j) {
       spas[i][j] = spas[i - 1][spas[i - 1][j]];
+    }
+  }
 }
 int lca(int u, int v) {
   if (h[u] < h[v]) swap(u, v);
