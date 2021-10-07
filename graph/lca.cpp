@@ -4,12 +4,12 @@ using namespace std;
 
 #define SPAS_LOG 22
 #define SPAS_NODE 1000001
-int spas[SPAS_LOG][SPAS_NODE];
+int spas[SPAS_NODE][SPAS_LOG];
 int h[SPAS_NODE];
 void do_spas() {
   for (int i = 1; i < SPAS_LOG; ++i) {
     for (int j = 1; j < SPAS_NODE; ++j) {
-      spas[i][j] = spas[i - 1][spas[i - 1][j]];
+      spas[j][i] = spas[spas[j][i - 1]][i - 1];
     }
   }
 }
@@ -17,10 +17,10 @@ int lca(int u, int v) {
   if (h[u] < h[v]) swap(u, v);
   int diff = h[u] - h[v];
   for (int i = SPAS_LOG - 1; i >= 0; --i)
-    if (diff & (1 << i)) u = spas[i][u];
+    if (diff & (1 << i)) u = spas[u][i];
   if (u == v) return u;
   for (int i = SPAS_LOG - 1; i >= 0; --i)
-    if (spas[i][u] != spas[i][v])
-      u = spas[i][u], v = spas[i][v];
-  return spas[0][u];
+    if (spas[u][i] != spas[v][i])
+      u = spas[u][i], v = spas[v][i];
+  return spas[u][0];
 }
