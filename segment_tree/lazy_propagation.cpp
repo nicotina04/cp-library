@@ -16,7 +16,7 @@ public:
 
   lazy_segtree(int _n): lazy(_n * 4), tree(_n * 4) {}
 
-  T init(int node, int start, int end, int *_ar) {
+  T init(int node, int start, int end, int* _ar) {
     if (start == end) return tree[node] = _ar[end];
     int m = mid(start, end);
     return tree[node] = init(node * 2, start, m, _ar) + init(node * 2 + 1, m + 1, end, _ar);
