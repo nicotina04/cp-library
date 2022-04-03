@@ -7,19 +7,19 @@ Segment tree with lazy propagation (Segment sum form)
 
 using namespace std;
 
-inline int mid(int s, int e) { return s + (e - s) / 2; }
-
 template <typename T>
 class lazy_segtree {
 private:
   vector<T> lazy, tree;
 public:
-  lazy_segtree(int n): lazy(n * 4), tree(n * 4) {}
+  inline int mid(int s, int e) { return s + (e - s) / 2; }
 
-  T init(int node, int start, int end) {
-    if (start == end) return tree[node] = ar[end];
+  lazy_segtree(int _n): lazy(_n * 4), tree(_n * 4) {}
+
+  T init(int node, int start, int end, int *_ar) {
+    if (start == end) return tree[node] = _ar[end];
     int m = mid(start, end);
-    return tree[node] = init(node * 2, start, m) + init(node * 2 + 1, m + 1, end);
+    return tree[node] = init(node * 2, start, m, _ar) + init(node * 2 + 1, m + 1, end, _ar);
   }
 
   void prop(int node, int start, int end) {
