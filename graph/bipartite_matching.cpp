@@ -6,10 +6,10 @@ int bpt[BI_G];
 vector<int> graph[BI_G];
 
 int bi_match(int cur) {
-  if (visited[cur]) return 0;
-  visited[cur] = 1;
   for (int i: graph[cur]) {
-    if (!bpt[i] || bi_match(i)) {
+    if (visited[i]) continue;
+    visited[i] = 1;
+    if (!bpt[i] || bi_match(bpt[i])) {
       bpt[i] = cur;
       return 1;
     }
