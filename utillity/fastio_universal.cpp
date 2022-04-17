@@ -1,6 +1,11 @@
 /*
  * https://usaco.guide/general/fast-io?lang=cpp
  */
+
+#include "bits/stdc++.h"
+
+using namespace std;
+
 inline namespace Input {
   const int BUF_SZ = 1 << 17;
   char buf[BUF_SZ];
@@ -17,6 +22,7 @@ inline namespace Input {
     return buf[pos++];
   }
 
+  // change to long long if you need
   int read_int() {
     int x;
     char ch;
@@ -51,7 +57,7 @@ inline namespace Output {
     buf[pos++] = c;
   }
 
-  void write_int(int x) {
+  void write_int(long long x) {
     static char num_buf[100];
     if (x < 0) {
       write_char('-');
