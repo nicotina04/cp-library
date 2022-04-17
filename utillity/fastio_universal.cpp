@@ -1,7 +1,6 @@
 /*
  * https://usaco.guide/general/fast-io?lang=cpp
  */
-
 #include "bits/stdc++.h"
 
 using namespace std;
@@ -57,7 +56,7 @@ inline namespace Output {
     buf[pos++] = c;
   }
 
-  void write_int(long long x) {
+  void write_int(long long x, char delim = '\n') {
     static char num_buf[100];
     if (x < 0) {
       write_char('-');
@@ -71,7 +70,7 @@ inline namespace Output {
     while (len) {
       write_char(num_buf[--len]);
     }
-    write_char('\n');
+    write_char(delim);
   }
 
   // auto-flush output when program exits
