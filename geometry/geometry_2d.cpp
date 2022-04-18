@@ -22,11 +22,6 @@ int ccw(point2 &p1, point2 &p2, point2 &p3) {
   return 1;
 }
 
-point2 rot_transform(point2 &p, double theta) {
-  double rad = theta * acos(-1);
-  return point2(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
-}
-
 double dist(point2 &a, point2 &b) { return hypot(a.x - b.x, a.y - b.y); }
 
 double polygon_area(vector<point2> &pvec) {
@@ -88,4 +83,10 @@ vector<point2> convexhull(vector<point2> &pvec) {
   }
 
   return ret;
+}
+
+
+point2 rot_transform(point2 &p, double theta) {
+  double rad = theta * acos(-1);
+  return point2(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
