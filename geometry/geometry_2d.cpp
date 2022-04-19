@@ -82,7 +82,6 @@ double polygon_perimeter(vector<point2f> &pvec) {
 
 vector<point2> convexhull(vector<point2> &pvec) {
   point2 pivot;
-  auto it = pvec.begin();
   int n = pvec.size();
 
   if (n <= 2) {
