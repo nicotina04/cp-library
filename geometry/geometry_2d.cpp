@@ -85,21 +85,13 @@ vector<point2> convexhull(vector<point2> &pvec) {
   auto it = pvec.begin();
   int n = pvec.size();
 
-  if (n == 1) return pvec;
-  if (n == 2) {
-    if (pvec[0] == pvec[1]) pvec.pop_back();
+  if (n <= 2) {
+    if (n == 2 and pvec[0] == pvec[1]) pvec.pop_back();
     return pvec;
   }
 
-  int piv_idx = 0;
-
-  for (int i = 1; i < n; ++i)
-    if (pvec[piv_idx].y > pvec[i].y or (pvec[piv_idx].y == pvec[i].y and pvec[piv_idx].x > pvec[i].x))
-      piv_idx = i;
-
-  point2 temp = pvec[0];
-  pivot = pvec[0] = pvec[piv_idx];
-  pvec[piv_idx] = temp;
+  swap(pvec[0], *min_element(pvec.begin(), pvec.end()));
+  auto it = pvec.begin();
 
   sort(it + 1, pvec.end(), [&](point2 &l, point2 &r) {
     int dir = ccw(pivot, l, r);
