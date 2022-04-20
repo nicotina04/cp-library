@@ -72,16 +72,7 @@ double polygon_perimeter(vector<point2> &pvec) {
   return ret;
 }
 
-double polygon_perimeter(vector<point2f> &pvec) {
-  double ret = 0;
-  for (int i = 0; i < (int)pvec.size() - 1; i++) {
-    ret += dist(pvec[i], pvec[i + 1]);
-  }
-  return ret;
-}
-
 vector<point2> convexhull(vector<point2> &pvec) {
-  point2 pivot;
   int n = pvec.size();
 
   if (n <= 2) {
@@ -93,8 +84,8 @@ vector<point2> convexhull(vector<point2> &pvec) {
   auto it = pvec.begin();
 
   sort(it + 1, pvec.end(), [&](point2 &l, point2 &r) {
-    int dir = ccw(pivot, l, r);
-    if (!dir) return dist(pivot, l) < dist(pivot, r);
+    int dir = ccw(*it, l, r);
+    if (!dir) return dist(*it, l) < dist(*it, r);
     return dir == 1;
   });
 
