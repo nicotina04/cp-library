@@ -117,18 +117,22 @@ point2f rot_transform(point2f &p, double theta) {
   return point2f(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
 
-struct line {double a, b, c; };
+struct line2 { long long a, b, c; };
 
-line connect_line(point2 &p1, point2 &p2) {
-  if (p1.x - p2.x == 0) return {1., 0., -(double)p1.x};
-  double la = -(double)(p1.y - p2.y) / (p1.x - p2.x);
-  double lc = -(double)(la * p1.x) - p1.y;
-  return {la, 1., lc};
+struct line2f { double a, b, c; };
+
+line2 points2line(point2 &p, point2 &q) {
+  auto a = p.y - q.y, b = q.x - p.x;
+  auto c = -a * p.x - b * p.y;
+  if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
+  auto g = gcd(gcd(a, b), c);
+  return {a / g, b / g, c / g};
 }
 
-line connect_line(point2f &p1, point2f &p2) {
-  if (fabs(p1.x - p2.x) <= 1e-9) return {1., 0., -(double)p1.x};
-  double la = -(double)(p1.y - p2.y) / (p1.x - p2.x);
-  double lc = -(double)(la * p1.x) - p1.y;
-  return {la, 1., lc};
+line2f points2line(point2f &p, point2f &q) {
+  auto a = p.y - q.y, b = q.x - p.x;
+  auto c = -a * p.x - b * p.y;
+  if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
+  auto z = sqrt(a * a + b * b);
+  return {a / z, b / z, c / z};
 }
