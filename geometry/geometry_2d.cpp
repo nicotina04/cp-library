@@ -39,7 +39,7 @@ int ccw(point2 &p1, point2 &p2, point2 &p3) {
 
 int ccw(point2f &p1, point2f &p2, point2f &p3) {
   double res = p1.x * p2.y + p3.x * p1.y + p2.x * p3.y - p3.x * p2.y - p1.x * p3.y - p2.x * p1.y;
-  if (abs(res) < 1e-9) return 0;
+  if (fabs(res) < 1e-9) return 0;
   if (res < 0) return -1;
   return 1;
 }
