@@ -8,12 +8,12 @@ struct point2f {
   point2f(double _x, double _y) : x(_x), y(_y) {}
 
   bool operator < (const point2f &r) const {
-    if (fabs(x - r.x) > 1e-9) return x < r.x;
+    if (fabs(x - r.x) >= 1e-9) return x < r.x;
     return y < r.y;
   }
 
   bool operator == (const point2f &r) const {
-    return (fabs(r.x - x) <= 1e-9 and fabs(r.y - y) <= 1e-9);
+    return (fabs(r.x - x) < 1e-9 and fabs(r.y - y) < 1e-9);
   }
 };
 
@@ -39,7 +39,7 @@ int ccw(point2 &p1, point2 &p2, point2 &p3) {
 
 int ccw(point2f &p1, point2f &p2, point2f &p3) {
   double res = p1.x * p2.y + p3.x * p1.y + p2.x * p3.y - p3.x * p2.y - p1.x * p3.y - p2.x * p1.y;
-  if (abs(res) <= 1e-9) return 0;
+  if (abs(res) < 1e-9) return 0;
   if (res < 0) return -1;
   return 1;
 }
@@ -47,6 +47,14 @@ int ccw(point2f &p1, point2f &p2, point2f &p3) {
 double dist(point2 &a, point2 &b) { return hypot(a.x - b.x, a.y - b.y); }
 
 double dist(point2f &a, point2f &b) { return hypot(a.x - b.x, a.y - b.y); }
+
+double det2(double a, double b, double c, double d) {
+  return a*d - b*c;
+}
+
+long long det2(long long a, long long b, long long c, long long d) {
+  return a*d - b*c;
+}
 
 double polygon_area(vector<point2> &pvec) {
   double ret = 0;
@@ -135,4 +143,38 @@ line2f points2line(point2f &p, point2f &q) {
   if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
   auto z = sqrt(a * a + b * b);
   return {a / z, b / z, c / z};
+}
+
+bool line_intersect(line2f &m, line2f &n, point2f &res) {
+  double zn = det2(m.a, m.b, n.a, n.b);
+  if (abs(zn) < 1e-9) return false;
+  res.x = -det2(m.c, m.b, n.c, n.b) / zn;
+  res.y = -det2(m.a, m.c, n.a, n.c) / zn;
+  return true;
+}
+
+bool line_intersect(line2 &m, line2 &n, point2f &res) {
+  long long zn = det2(m.a, m.b, n.a, n.b);
+  if (zn == 0) return false;
+  res.x = -det2(m.c, m.b, n.c, n.b) / (double)zn;
+  res.y = -det2(m.a, m.c, n.a, n.c) / (double)zn;
+  return true;
+}
+
+bool line_parallel(line2 &m, line2 &n) {
+  return m.a == n.a and m.b == n.b;
+}
+
+bool line_parallel(line2f &m, line2f &n) {
+  return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9;
+}
+
+bool line_equiv(line2 &m, line2 &n) {
+  return !det2(m.a, m.b, n.a, n.b) and !det2(m.a, m.c, n.a, n.c) and !det2(m.b, m.c, n.b, n.c);
+}
+
+bool line_equiv(line2f &m, line2f &n) {
+  return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9 and
+  abs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
+  abs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
 }
