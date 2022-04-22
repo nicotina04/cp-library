@@ -21,8 +21,7 @@ inline namespace Input {
     return buf[pos++];
   }
 
-  // change to long long if you need
-  int read_int() {
+  long long read_int() {
     int x;
     char ch;
     int sgn = 1;
