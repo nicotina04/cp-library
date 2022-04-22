@@ -147,7 +147,7 @@ line2f points2line(point2f &p, point2f &q) {
 
 bool line_intersect(line2f &m, line2f &n, point2f &res) {
   double zn = det2(m.a, m.b, n.a, n.b);
-  if (abs(zn) < 1e-9) return false;
+  if (fabs(zn) < 1e-9) return false;
   res.x = -det2(m.c, m.b, n.c, n.b) / zn;
   res.y = -det2(m.a, m.c, n.a, n.c) / zn;
   return true;
@@ -166,7 +166,7 @@ bool line_parallel(line2 &m, line2 &n) {
 }
 
 bool line_parallel(line2f &m, line2f &n) {
-  return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9;
+  return fabs(det2(m.a, m.b, n.a, n.b)) < 1e-9;
 }
 
 bool line_equiv(line2 &m, line2 &n) {
@@ -174,7 +174,7 @@ bool line_equiv(line2 &m, line2 &n) {
 }
 
 bool line_equiv(line2f &m, line2f &n) {
-  return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9 and
-  abs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
-  abs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
+  return fabs(det2(m.a, m.b, n.a, n.b)) < 1e-9 and
+  fabs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
+  fabs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
 }
