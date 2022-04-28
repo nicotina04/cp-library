@@ -193,12 +193,20 @@ struct gvec2f {
   gvec2f(double _x, double _y) : x(_x), y(_y) {}
 };
 
-gvec2 get_vec2(point2 &p, point2 &q) {
+gvec2 get_gvec2(point2 &p, point2 &q) {
   return {q.x - p.x, q.y - p.y};
 }
 
-gvec2f get_vec2f(point2f &p, point2f &q) {
+gvec2f get_gvec2f(point2f &p, point2f &q) {
   return {q.x - p.x, q.y - p.y};
+}
+
+gvec2 gvec2_scalar(gvec2 &_v, long long val) {
+  return {_v.x * val, _v.y * val};
+}
+
+gvec2f gvec2f_scalar(gvec2f &_v, double val) {
+  return {_v.x * val, _v.y * val};
 }
 
 long long dot_prod(gvec2 &v1, gvec2 &v2) {
