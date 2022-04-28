@@ -216,3 +216,19 @@ long long dot_prod(gvec2 &v1, gvec2 &v2) {
 double dot_prod(gvec2f &v1, gvec2f &v2) {
   return v1.x * v2.x + v1.y * v2.y;
 }
+
+point2 point_translate(point2 &p, gvec2 &_v) {
+  return {p.x + _v.x, p.y + _v.y};
+}
+
+point2f point_translate(point2 &p, gvec2f &_v) {
+  return {p.x + _v.x, p.y + _v.y};
+}
+
+point2f point_translate(point2f &p, gvec2f &_v) {
+  return {p.x + _v.x, p.y + _v.y};
+}
+
+point2f point_translate(point2f &p, gvec2 &_v) {
+  return {p.x + _v.x, p.y + _v.y};
+}
