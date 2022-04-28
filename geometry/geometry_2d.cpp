@@ -129,20 +129,24 @@ struct line2 { long long a, b, c; };
 
 struct line2f { double a, b, c; };
 
-line2 points2line(point2 &p, point2 &q) {
+bool line_equation(point2 &p, point2 &q, line2 &res) {
+  if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
   if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
   auto g = gcd(gcd(a, b), c);
-  return {a / g, b / g, c / g};
+  res = {a / g, b / g, c / g};
+  return true;
 }
 
-line2f points2line(point2f &p, point2f &q) {
+bool line_equation(point2f &p, point2f &q, line2f &res) {
+  if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
   if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
   auto z = sqrt(a * a + b * b);
-  return {a / z, b / z, c / z};
+  res = {a / z, b / z, c / z};
+  return true;
 }
 
 bool line_intersect(line2f &m, line2f &n, point2f &res) {
