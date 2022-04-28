@@ -150,7 +150,7 @@ bool line_equation(point2f &p, point2f &q, line2f &res) {
 }
 
 bool line_intersect(line2f &m, line2f &n, point2f &res) {
-  double zn = det2(m.a, m.b, n.a, n.b);
+  auto zn = det2(m.a, m.b, n.a, n.b);
   if (fabs(zn) < 1e-9) return false;
   res.x = -det2(m.c, m.b, n.c, n.b) / zn;
   res.y = -det2(m.a, m.c, n.a, n.c) / zn;
@@ -158,7 +158,7 @@ bool line_intersect(line2f &m, line2f &n, point2f &res) {
 }
 
 bool line_intersect(line2 &m, line2 &n, point2f &res) {
-  long long zn = det2(m.a, m.b, n.a, n.b);
+  auto zn = det2(m.a, m.b, n.a, n.b);
   if (zn == 0) return false;
   res.x = -det2(m.c, m.b, n.c, n.b) / (double)zn;
   res.y = -det2(m.a, m.c, n.a, n.c) / (double)zn;
