@@ -182,3 +182,21 @@ bool line_equiv(line2f &m, line2f &n) {
   fabs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
   fabs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
 }
+
+struct geo_vec2 {
+  long long x, y;
+  geo_vec2(long long _x, long long _y) : x(_x), y(_y) {}
+};
+
+struct geo_vec2f {
+  double x, y;
+  geo_vec2f(double _x, double _y) : x(_x), y(_y) {}
+};
+
+geo_vec2 get_vec2(point2 &p, point2 &q) {
+  return {q.x - p.x, q.y - p.y};
+}
+
+geo_vec2f get_vec2f(point2f &p, point2f &q) {
+  return {q.x - p.x, q.y - p.y};
+}
