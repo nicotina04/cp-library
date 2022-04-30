@@ -179,8 +179,8 @@ bool line_equiv(line2 &m, line2 &n) {
 
 bool line_equiv(line2f &m, line2f &n) {
   return fabs(det2(m.a, m.b, n.a, n.b)) < 1e-9 and
-  fabs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
-  fabs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
+         fabs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
+         fabs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
 }
 
 struct gvec2 {
@@ -205,6 +205,10 @@ gvec2 gvec2_scalar(gvec2 &_v, long long val) {
   return {_v.x * val, _v.y * val};
 }
 
+gvec2f gvec2_scalar(gvec2 &_v, double val) {
+  return {_v.x * val, _v.y * val};
+}
+
 gvec2f gvec2f_scalar(gvec2f &_v, double val) {
   return {_v.x * val, _v.y * val};
 }
@@ -215,6 +219,14 @@ long long dot_prod(gvec2 &v1, gvec2 &v2) {
 
 double dot_prod(gvec2f &v1, gvec2f &v2) {
   return v1.x * v2.x + v1.y * v2.y;
+}
+
+inline long long norm_sq(gvec2 &_v) {
+  return _v.x * _v.x + _v.y * _v.y;
+}
+
+inline double norm_sq(gvec2f &_v) {
+  return _v.x * _v.x + _v.y * _v.y;
 }
 
 point2 point_translate(point2 &p, gvec2 &_v) {
@@ -231,4 +243,32 @@ point2f point_translate(point2f &p, gvec2f &_v) {
 
 point2f point_translate(point2f &p, gvec2 &_v) {
   return {p.x + _v.x, p.y + _v.y};
+}
+
+double dist2line(point2 &p, point2 &a, point2 &b, point2f &c) {
+  gvec2 ap = get_gvec2(a, p);
+  gvec2 ab = get_gvec2(a, b);
+  double u = (double)dot_prod(ap, ab) / norm_sq(ab);
+  auto tmp = gvec2_scalar(ab, u);
+  c = point_translate(a, tmp);
+  return hypot(p.x - c.x, p.y - c.y);
+}
+
+double dist2line(point2f &p, point2f &a, point2f &b, point2f &c) {
+  gvec2f ap = get_gvec2f(a, p);
+  gvec2f ab = get_gvec2f(a, b);
+  double u = (double)dot_prod(ap, ab) / norm_sq(ab);
+  auto tmp = gvec2f_scalar(ab, u);
+  c = point_translate(a, tmp);
+  return hypot(p.x - c.x, p.y - c.y);
+}
+
+double angle(point2 a, point2 o, point2 b) {
+  auto oa = get_gvec2(a, o), ob = get_gvec2(o, b);
+  return acos(dot_prod(oa, ob) / sqrt(norm_sq(oa) * norm_sq(ob)));
+}
+
+double angle(point2f a, point2f o, point2f b) {
+  auto oa = get_gvec2f(a, o), ob = get_gvec2f(o, b);
+  return acos(dot_prod(oa, ob) / sqrt(norm_sq(oa) * norm_sq(ob)));
 }
