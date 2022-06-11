@@ -138,7 +138,7 @@ bool line_parallel(line2<long long> &m, line2<long long> &n) {
 }
 
 bool line_parallel(line2<double> &m, line2<double> &n) {
-return fabs(det2(m.a, m.b, n.a, n.b)) < 1e-9;
+  return fabs(det2(m.a, m.b, n.a, n.b)) < 1e-9;
 }
 
 bool line_equiv(line2<long long> &m, line2<long long> &n) {
@@ -153,6 +153,48 @@ bool line_equiv(line2<double> &m, line2<double> &n) {
 
 template<typename T>
 struct mvec2 {
-     T x, y;
-     mvec2(T _x, T _y) : x(_x), y(_y) {}
+  T x, y;
+  mvec2(T _x, T _y) : x(_x), y(_y) {}
+  mvec2() { mvec2(0, 0); }
 };
+
+template<typename T>
+mvec2<T> get_mvec2(point2<T> &p, point2<T> &q) { return {q.x - p.x, q.y - p.y}; }
+
+template<typename T>
+mvec2<T> mvec2_scalar(mvec2<T> _v, long long val) { return {_v.x * val, _v.y * val}; }
+
+template<typename T>
+mvec2<double> mvec2_scalar(mvec2<T> _v, double val) { return {_v.x * val, _v.y * val}; }
+
+template<typename T>
+inline T dot_prod(mvec2<T> &v1, mvec2<T> &v2) { return v1.x * v2.x + v1.y * v2.y; }
+
+template<typename T>
+inline T norm_sq(mvec2<T> &_v) { return _v.x * _v.x + _v.y * _v.y; }
+
+template<typename T>
+point2<T> point2_translate(point2<T> &p, mvec2<long long> &_v) {
+  return {p.x + _v.x, p.y + _v.y};
+}
+
+template<typename T>
+point2<double> point2_translate(point2<T> &p, mvec2<double> &_v) {
+  return {p.x + _v.x, p.y + _v.y};
+}
+
+template<typename T>
+double dist2line(point2<T> &p, point2<T> &a, point2<T> &b, point2<double> &c) {
+  mvec2<T> ap = get_mvec2(a, p);
+  mvec2<T> ab = get_mvec2(a, b);
+  auto u = (double)dot_prod(ap, ab) / norm_sq(ab);
+  c = mvec2_scalar(ab, u);
+  c = point2_translate<double>(a, c);
+  return hypot(p.x - c.x, p.y - c.y);
+}
+
+template<typename T>
+double angle(point2<T> a, point2<T> o, point2<T> b) {
+  auto oa = get_mvec2<T>(a, o), ob = get_mvec2<T>(o, b);
+  return acos(dot_prod(oa, ob) / sqrt(norm_sq(oa) * norm_sq(ob)));
+}
