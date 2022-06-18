@@ -22,7 +22,7 @@ inline namespace Input {
   }
 
   long long read_int() {
-    int x;
+    long long x;
     char ch;
     int sgn = 1;
     while (!isdigit(ch = next_char())) {
