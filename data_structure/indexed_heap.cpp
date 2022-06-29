@@ -75,6 +75,6 @@ struct idx_heap {
     T k = arr[cur].w;
     arr[cur] = arr[size--];
     pos[arr[cur].i] = cur;
-    arr[cur].w > k ? down(cur) : up(cur);
+    k < arr[cur].w ? down(cur) : up(cur);
   }
 };
