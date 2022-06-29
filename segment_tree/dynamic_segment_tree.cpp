@@ -4,6 +4,8 @@ using namespace std;
 
 using ll = long long;
 
+#define SEG_SIZE 400000
+
 struct node {
   int l, r;
   ll val;
@@ -11,7 +13,7 @@ struct node {
 };
 int tree_size = 1;
 
-array<node, 400000> tree;
+array<node, SEG_SIZE> tree;
 
 void update(int node, int start, int end, int idx, ll val) {
   if (start == end) {
