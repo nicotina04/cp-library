@@ -3,21 +3,22 @@
 using namespace std;
 
 template <typename T>
-struct idx_heap {
-  struct Elem {
-    int i;
-    T w;
-    bool operator < (const Elem &o) const {
-      return w != o.w ? w < o.w : i < o.i;
-    }
-  };
+struct Elem {
+  int i;
+  T w;
+  bool operator < (const Elem &o) const {
+    return w != o.w ? w < o.w : i < o.i;
+  }
+};
 
-  Elem *arr;
+template <typename T>
+struct idx_heap {
+  Elem<T> *arr;
   int *pos;
   int size;
 
   idx_heap(int _n) : size(0) {
-    arr = new Elem[_n + 1];
+    arr = new Elem<T>[_n + 1];
     pos = new int[_n + 1];
   }
 
@@ -37,6 +38,13 @@ struct idx_heap {
     auto k = arr[cur].w;
     arr[cur].w = w;
     k < w ? down(cur) : up(cur);
+  }
+
+  void update(int i, T w) {
+    int cur = pos[i];
+    auto k = arr[cur].w;
+    arr[cur].w += w;
+    k < arr[cur].w ? down(cur) : up(cur);
   }
 
   void up(int cur) {
