@@ -17,7 +17,7 @@ struct idx_heap {
   int size;
 
   idx_heap(int _n) : size(0) {
-    arr = new Elem<T>[_n + 1];
+    arr = new Elem[_n + 1];
     pos = new int[_n + 1];
   }
 
