@@ -104,19 +104,23 @@ point2<double> rot_transform(point2<T> &p, double theta) {
 template<typename T>
 struct line2 { T a, b, c; };
 
-template<typename T>
-bool line_equation(point2<T> &p, point2<T> &q, line2<T> &res) {
+bool line_equation(point2<long long> &p, point2<long long> &q, line2<long long> &res) {
   if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
   if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
-  double de = 1;
-  if (typeid(T) == typeid(long long)) {
-    de = gcd(gcd(a, b), c);
-  } else {
-    de = sqrt(a * a + b * b);
-  }
-  res = {a / (T)de, b / (T)de, c / (T)de};
+  long long de = gcd(gcd(a, b), c);
+  res = {a / de, b / de, c / de};
+  return true;
+}
+
+bool line_equation(point2<double> &p, point2<double> &q, line2<double> &res) {
+  if (p == q) return false;
+  auto a = p.y - q.y, b = q.x - p.x;
+  auto c = -a * p.x - b * p.y;
+  if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
+  double de = sqrt(a * a + b * b);
+  res = {a / de, b / de, c / de};
   return true;
 }
 
