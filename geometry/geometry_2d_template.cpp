@@ -21,7 +21,7 @@ struct point2 {
 template<typename T>
 int ccw(point2<T> &p1, point2<T> &p2, point2<T> &p3) {
   T res = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
-  if (fabs(res) < 1e-9) return 0;
+  if (abs(res) < 1e-9) return 0;
   if (res < 0) return -1;
   return 1;
 }
