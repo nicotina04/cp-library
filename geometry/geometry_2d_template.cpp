@@ -97,7 +97,7 @@ vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
 
 template<typename T>
 point2<double> rot_transform(point2<T> &p, double theta) {
-  double rad = theta * acos(-1);
+  double rad = theta * acos(-1) / 180.;
   return point2<double>(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
 
