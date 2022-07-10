@@ -99,9 +99,10 @@ bool line_equation(point2<long long> &p, point2<long long> &q, line2<long long> 
   if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
+  auto de = gcd(gcd(abs(a), abs(b)), abs(c));
+  a /= de, b /= de, c /= de;
   if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
-  auto de = gcd(gcd(a, b), c);
-  res = {a / de, b / de, c / de};
+  res = {a, b, c};
   return true;
 }
 
@@ -109,7 +110,7 @@ bool line_equation(point2<double> &p, point2<double> &q, line2<double> &res) {
   if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
-  if (a < 0 or (a == 0 and b < 0)) a *= -1, b *= -1, c *= -1;
+  if (a < -1e-9 or (abs(a) < 1e-9 and b < -1e-9)) a = -a, b = -b, c = -c;
   auto de = sqrt(a * a + b * b);
   res = {a / de, b / de, c / de};
   return true;
