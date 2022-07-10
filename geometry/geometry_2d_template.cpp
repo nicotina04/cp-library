@@ -189,7 +189,7 @@ double dist2line(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
 template<typename T>
 double dist2segment(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
   mvec2<T> ap = get_mvec2(a, p), ab = get_mvec2(a, b);
-  auto u = dot_prod(ap, ab) / norm_sq(ab);
+  auto u = (double)dot_prod(ap, ab) / norm_sq(ab);
   if (u < 0) {
     c.x = a.x, c.y = a.y;
     return hypot(p.x - a.x, p.y - a.y);
