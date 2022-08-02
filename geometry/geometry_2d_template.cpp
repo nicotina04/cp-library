@@ -9,19 +9,19 @@ struct point2 {
   point2(T _x, T _y) : x(_x), y(_y) {}
 
   bool operator < (const point2<T> &r) const {
-    if (abs(x - r.x) >= 1e-9) return x < r.x;
+    if (abs(x - r.x) > 1e-9) return x < r.x;
     return y < r.y;
   }
 
   bool operator == (const point2<T> &r) const {
-    return (abs(r.x - x) < 1e-9 and abs(r.y - y) < 1e-9);
+    return (abs(r.x - x) <= 1e-9 and abs(r.y - y) <= 1e-9);
   }
 };
 
 template<typename T>
 int ccw(point2<T> p1, point2<T> p2, point2<T> p3) {
   T res = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
-  if (abs(res) < 1e-12) return 0;
+  if (abs(res) <= 1e-9) return 0;
   if (res < 0) return -1;
   return 1;
 }
@@ -59,35 +59,24 @@ point2<double> rot_transform(point2<T> &p, double theta) {
 template<typename T>
 vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
   int n = pvec.size();
-
   if (n == 2 and pvec[0] == pvec[1]) pvec.pop_back();
   if (n <= 2) return pvec;
-
-  swap(pvec[0], *min_element(pvec.begin(), pvec.end()));
-  auto it = pvec.begin();
-
-  sort(it + 1, pvec.end(), [&](point2<T> &l, point2<T> &r) {
-    int dir = ccw(*it, l, r);
-    if (!dir) return ec_dist(*it, l) < ec_dist(*it, r);
-    return dir == 1;
-  });
-
-  vector<point2<T>> ret(it, it + 2);
-
-  int idx = 2, last;
-
-  while (idx < n) {
-    last = (int)ret.size() - 1;
-
-    while (ret.size() >= 2 && ccw(ret[last - 1], ret[last], pvec[idx]) <= 0) {
-      --last;
-      ret.pop_back();
-    }
-
-    ret.push_back(pvec[idx++]);
+  sort(pvec.begin(), pvec.end());
+  vector<point2<T>> dh(n), uh(n);
+  int sz = 0;
+  for (int i = 0; i < n; i++) {
+    while (sz > 1 and ccw(dh[sz - 2], dh[sz - 1], pvec[i]) <= 0) --sz;
+    dh[sz++] = pvec[i];
   }
-
-  return ret;
+  dh.resize(sz - 1);
+  sz = 0;
+  for (int i = n - 1; i >= 0; i--) {
+    while (sz > 1 and ccw(uh[sz - 2], uh[sz - 1], pvec[i]) <= 0) --sz;
+    uh[sz++] = pvec[i];
+  }
+  uh.resize(sz - 1);
+  for (auto &item : uh) dh.push_back(item);
+  return dh;
 }
 
 template<typename T>
