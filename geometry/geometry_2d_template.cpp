@@ -144,11 +144,11 @@ struct mvec2 {
 template<typename T>
 mvec2<T> get_mvec2(point2<T> p, point2<T> q) { return {q.x - p.x, q.y - p.y}; }
 
-template<typename T>
-mvec2<T> mvec2_scalar(mvec2<T> _v, long long val) { return {_v.x * val, _v.y * val}; }
+template<typename T, typename U>
+mvec2<T> mvec2_scalar(mvec2<T> _v, U val) { return {_v.x * val, _v.y * val}; }
 
-template<typename T>
-mvec2<double> mvec2_scalar(mvec2<T> _v, double val) { return {_v.x * val, _v.y * val}; }
+template<typename T, typename U>
+T cross(mvec2<U> a, mvec2<U> b) { return a.x * b.y - a.y * b.x; }
 
 template<typename T>
 inline T dot_prod(mvec2<T> &v1, mvec2<T> &v2) { return v1.x * v2.x + v1.y * v2.y; }
