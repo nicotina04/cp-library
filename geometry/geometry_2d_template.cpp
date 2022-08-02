@@ -45,7 +45,7 @@ template<typename T>
 double polygon_perimeter(vector<point2<T>> &pvec) {
   double ret = 0;
   for (int i = 0; i < (int)pvec.size() - 1; i++) {
-    ret += dist(pvec[i], pvec[i + 1]);
+    ret += ec_dist(pvec[i], pvec[i + 1]);
   }
   return ret;
 }
@@ -70,7 +70,7 @@ vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
 
   sort(it + 1, pvec.end(), [&](point2<T> &l, point2<T> &r) {
     int dir = ccw(*it, l, r);
-    if (!dir) return dist(*it, l) < dist(*it, r);
+    if (!dir) return ec_dist(*it, l) < ec_dist(*it, r);
     return dir == 1;
   });
 
