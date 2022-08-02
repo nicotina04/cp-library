@@ -110,9 +110,9 @@ bool line_equation(point2<double> &p, point2<double> &q, line2<double> &res) {
   if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
-  if (a < -1e-9 or (abs(a) < 1e-9 and b < -1e-9)) a = -a, b = -b, c = -c;
   auto de = sqrt(a * a + b * b);
-  res = {a / de, b / de, c / de};
+  a /= de, b /= de, c /= de;
+  if (a <= -1e-9 or (abs(a) < 1e-9 and b <= -1e-9)) a = -a, b = -b, c = -c;
   return true;
 }
 
