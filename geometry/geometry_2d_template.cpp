@@ -60,10 +60,8 @@ template<typename T>
 vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
   int n = pvec.size();
 
-  if (n <= 2) {
-    if (n == 2 and pvec[0] == pvec[1]) pvec.pop_back();
-    return pvec;
-  }
+  if (n == 2 and pvec[0] == pvec[1]) pvec.pop_back();
+  if (n <= 2) return pvec;
 
   swap(pvec[0], *min_element(pvec.begin(), pvec.end()));
   auto it = pvec.begin();
