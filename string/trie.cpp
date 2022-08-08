@@ -18,8 +18,7 @@ struct trie {
     }
     haschild = true;
     int nxt = *key - 'a';
-    if (child[nxt] == nullptr)
-      child[nxt] = new trie();
+    if (child[nxt] == nullptr) child[nxt] = new trie();
     child[nxt]->insert(key + 1);
   }
 
