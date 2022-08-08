@@ -6,7 +6,7 @@ struct trie {
   trie *child[26];
   bool terminal, haschild;
 
-  trie() : terminal(false), haschild(false) { fill(child, child + 26, nullptr); }
+  trie() : terminal(false), haschild(false) { for (auto &i : child) i = nullptr; }
   ~trie() { for (auto &i : child) delete i; }
 
   void insert(const char *key) {
