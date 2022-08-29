@@ -5,8 +5,9 @@ using namespace std;
 
 using ll = long long;
 
+#define SIEVE 1000001
 vector<int> primes;
-bitset<1000001> nop;
+bitset<SIEVE> nop;
 
 void sieve(int mx) {
   for (int i = 2; i <= mx; i++) {
