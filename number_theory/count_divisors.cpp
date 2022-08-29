@@ -1,3 +1,4 @@
+/* Dont use. This code is not perfect */
 #include "bits/stdc++.h"
 #include "ext/rope"
 
@@ -25,21 +26,13 @@ ll count_divisors(ll num) {
     while (num % i == 0) num /= i, ++cnt;
     ret *= cnt;
   }
-  if (!nop[num]) ret <<= 1;
-  else {
-    ll lo = 1, hi = num;
-    bool good = false;
-    while (lo <= hi) {
-      auto mid = lo + (hi - lo) / 2;
-      if (mid * mid == num) {
-        good = true; // mid is prime
-        break;
-      }
-      if (mid * mid < num) lo = mid + 1;
-      else hi = mid - 1;
-    }
-    if (good) ret *= 3;
-    else ret *= 4;
-  }
+  /*
+  To Do
+  check num is prime
+  check sqrt(num) is prime
+  else this is not a prime
+  https://www.dropbox.com/s/ny5nx5swg8bueth/divisors.pdf?dl=0
+  https://codeforces.com/blog/entry/22317?#comment-797506
+  */
   return ret;
 }
