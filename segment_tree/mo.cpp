@@ -6,7 +6,7 @@ struct query
   bool operator < (const query &arg) const
   {
     int x = r / rt, y = arg.r / rt;
-    return x != y ? l < arg.l : x < y;
+    return x == y ? l < arg.l : x < y;
   }
 };
 
