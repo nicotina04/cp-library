@@ -4,7 +4,7 @@ using namespace std;
 
 using ll = long long;
 
-#define SEG_SIZE 400000
+#define MAXN 100000
 
 struct node {
   int l, r;
@@ -13,7 +13,7 @@ struct node {
 };
 int tree_size = 1;
 
-array<node, SEG_SIZE> tree;
+array<node, MAXN*64> tree;
 
 void update(int node, int start, int end, int idx, ll val) {
   if (start == end) {
