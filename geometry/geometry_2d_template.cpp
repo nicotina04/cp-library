@@ -218,7 +218,7 @@ bool is_convex(const vector<point2<T>> &pv) {
   return true;
 }
 
-template<class T>
+template<typename T>
 bool in_polygon(point2<T> p, const vector<point2<T>> &pv) {
   int cnt = 0;
   for (int i = 0; i < pv.size(); i++) {
@@ -229,4 +229,13 @@ bool in_polygon(point2<T> p, const vector<point2<T>> &pv) {
     }
   }
   return cnt & 1;
+}
+
+template<typename T>
+bool in_triangle(point2<T> target, point2<T> a, point2<T> b, point2<T> c) {
+  int ab = ccw(a, b, target);
+  int bc = ccw(b, c, target);
+  int ca = ccw(c, a, target);
+  if (!ab or !bc or !ca) return false; // no allow bound
+  return ab == bc and bc == ca;
 }
