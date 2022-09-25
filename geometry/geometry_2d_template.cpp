@@ -9,19 +9,19 @@ struct point2 {
   point2(T _x, T _y) : x(_x), y(_y) {}
 
   bool operator < (const point2<T> &r) const {
-    if (abs(x - r.x) > 1e-9) return x < r.x;
+    if (abs(x - r.x) >= 1e-9) return x < r.x;
     return y < r.y;
   }
 
   bool operator == (const point2<T> &r) const {
-    return (abs(r.x - x) <= 1e-9 and abs(r.y - y) <= 1e-9);
+    return (abs(r.x - x) < 1e-9 and abs(r.y - y) < 1e-9);
   }
 };
 
 template<typename T>
 int ccw(point2<T> p1, point2<T> p2, point2<T> p3) {
   T res = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
-  if (abs(res) <= 1e-9) return 0;
+  if (abs(res) < 1e-9) return 0;
   if (res < 0) return -1;
   return 1;
 }
