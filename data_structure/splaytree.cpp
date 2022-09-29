@@ -25,8 +25,8 @@ private:
   }
   void rotate(node *x) {
     auto p = x->p;
-    propa(p);
-    propa(x);
+    push(p);
+    push(x);
     node *b = nullptr;
     if (!p) return;
     if (x == p->l) {
@@ -124,16 +124,16 @@ public:
   }
   void kth(int k) {
     auto x = root;
-    propa(x); // Can change to inv
+    push(x); // Can change to inv
     while (1) {
       while (x->l && x->l->cnt > k) {
         x = x->l;
-        propa(x);
+        push(x);
       }
       if (x->l) k -= x->l->cnt;
       if (!k--) break;
       x = x->r;
-      propa(x);
+      push(x);
     }
     splay(x);
   }
@@ -149,7 +149,7 @@ public:
     splay(tmp, root);
     return root->r->l;
   }
-  void propa(node *x) { // 1. segment mode
+  void push(node *x) { // 1. segment mode
     x->key += x->lazy;
     if (x->l) {
       x->l->lazy += x->lazy;
@@ -161,7 +161,7 @@ public:
     }
     x->lazy = 0;
   }
-  void propa_inv(node *x) { // 2. inversion mode
+  void push_inv(node *x) { // 2. inversion mode
     if (!x->inv) return;
     swap(x->l, x->r);
     if (x->l) x->l->inv ^= 1;
@@ -189,7 +189,7 @@ public:
       update(x);
       x = x->p;
     }
-    // prt[n + 1] = x->r;
+    // ptr[n + 1] = x->r;
     // for (int i = n; i >= 1; --i) update(ptr[i]);
     // splay(ptr[n / 2]);
   }
