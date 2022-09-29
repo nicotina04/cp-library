@@ -1,21 +1,14 @@
 #include "bits/stdc++.h"
 
 using namespace std;
+using ll = int_fast64_t;
 
-template<typename T>
-struct point2 {
+template<typename T> struct point2 {
   T x, y;
   point2() : x(0), y(0) {}
   point2(T _x, T _y) : x(_x), y(_y) {}
-
-  bool operator < (const point2<T> &r) const {
-    if (abs(x - r.x) >= 1e-9) return x < r.x;
-    return y < r.y;
-  }
-
-  bool operator == (const point2<T> &r) const {
-    return (abs(r.x - x) < 1e-9 and abs(r.y - y) < 1e-9);
-  }
+  bool operator < (const point2<T> &r) const { return x != r.x ? x < r.x : y < r.y; }
+  bool operator == (const point2<T> &r) const { return (abs(r.x - x) < 1e-9 and abs(r.y - y) < 1e-9); }
 };
 
 template<typename T>
@@ -26,14 +19,11 @@ int ccw(point2<T> p1, point2<T> p2, point2<T> p3) {
   return 1;
 }
 
-template<typename T>
-double ec_dist(point2<T> &a, point2<T> &b) { return hypot(a.x - b.x, a.y - b.y); }
+template<typename T> double ec_dist(point2<T> &a, point2<T> &b) { return hypot(a.x - b.x, a.y - b.y); }
 
-template<typename T>
-T det2(T a, T b, T c, T d) { return a*d - b*c; }
+template<typename T> T det2(T a, T b, T c, T d) { return a*d - b*c; }
 
-template<typename T>
-double polygon_area(vector<point2<T>> &pvec) {
+template<typename T> double polygon_area(vector<point2<T>> &pvec) {
   double ret = 0;
   for (int i = 0; i < (int)pvec.size() - 1; i++) {
     ret += pvec[i].x * pvec[i + 1].y - pvec[i + 1].x * pvec[i].y;
@@ -41,8 +31,7 @@ double polygon_area(vector<point2<T>> &pvec) {
   return abs(ret) / 2;
 }
 
-template<typename T>
-double polygon_perimeter(vector<point2<T>> &pvec) {
+template<typename T> double polygon_perimeter(vector<point2<T>> &pvec) {
   double ret = 0;
   for (int i = 0; i < (int)pvec.size() - 1; i++) {
     ret += ec_dist(pvec[i], pvec[i + 1]);
@@ -50,8 +39,7 @@ double polygon_perimeter(vector<point2<T>> &pvec) {
   return ret;
 }
 
-template<typename T>
-point2<double> rot_transform(point2<T> &p, double theta) {
+template<typename T> point2<double> rot_transform(point2<T> &p, double theta) {
   double rad = theta * acos(-1) / 180.;
   return point2<double>(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
@@ -79,8 +67,7 @@ vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
   return dh;
 }
 
-template<typename T>
-struct line2 { T a, b, c; };
+template<typename T> struct line2 { T a, b, c; };
 
 bool line_equation(point2<long long> &p, point2<long long> &q, line2<long long> &res) {
   if (p == q) return false;
@@ -116,48 +103,34 @@ bool line_intersect(line2<T> &m, line2<T> &n, point2<double> &res) {
   return true;
 }
 
-bool line_parallel(line2<long long> &m, line2<long long> &n) {
-  return m.a == n.a and m.b == n.b;
-}
+bool line_parallel(line2<ll> &m, line2<ll> &n) { return m.a == n.a and m.b == n.b; }
+bool line_parallel(line2<double> &m, line2<double> &n) { return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9; }
 
-bool line_parallel(line2<double> &m, line2<double> &n) {
-  return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9;
-}
-
-bool line_equiv(line2<long long> &m, line2<long long> &n) {
-  return !det2(m.a, m.b, n.a, n.b) and !det2(m.a, m.c, n.a, n.c) and !det2(m.b, m.c, n.b, n.c);
-}
-
+bool line_equiv(line2<ll> &m, line2<ll> &n) { return !det2(m.a, m.b, n.a, n.b) and !det2(m.a, m.c, n.a, n.c) and !det2(m.b, m.c, n.b, n.c); }
 bool line_equiv(line2<double> &m, line2<double> &n) {
   return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9 and
          abs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
          abs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
 }
 
-template<typename T>
-struct mvec2 {
+template<typename T> struct mvec2 {
   T x, y;
   mvec2(T _x, T _y) : x(_x), y(_y) {}
   mvec2() { mvec2(0, 0); }
 };
 
-template<typename T>
-mvec2<T> get_mvec2(point2<T> p, point2<T> q) { return {q.x - p.x, q.y - p.y}; }
+template<typename T> mvec2<T> get_mvec2(point2<T> p, point2<T> q) { return {q.x - p.x, q.y - p.y}; }
 
-template<typename T, typename U>
-mvec2<T> mvec2_scalar(mvec2<T> _v, U val) { return {_v.x * val, _v.y * val}; }
+template<typename T, typename U> mvec2<T> mvec2_scalar(mvec2<T> _v, U val) { return {_v.x * val, _v.y * val}; }
 
-template<typename T, typename U>
-T cross(mvec2<U> a, mvec2<U> b) { return a.x * b.y - a.y * b.x; }
+template<typename T, typename U> T cross(mvec2<U> a, mvec2<U> b) { return a.x * b.y - a.y * b.x; }
 
-template<typename T>
-inline T dot_prod(mvec2<T> &v1, mvec2<T> &v2) { return v1.x * v2.x + v1.y * v2.y; }
+template<typename T> inline T dot_prod(mvec2<T> &v1, mvec2<T> &v2) { return v1.x * v2.x + v1.y * v2.y; }
+
+template<typename T> inline T norm_sq(mvec2<T> &_v) { return _v.x * _v.x + _v.y * _v.y; }
 
 template<typename T>
-inline T norm_sq(mvec2<T> &_v) { return _v.x * _v.x + _v.y * _v.y; }
-
-template<typename T>
-point2<T> point2_translate(point2<T> p, mvec2<long long> &_v) {
+point2<T> point2_translate(point2<T> p, mvec2<ll> _v) {
   return {p.x + _v.x, p.y + _v.y};
 }
 
