@@ -1,6 +1,6 @@
 #define MANA_SIZE 4000003
 string s, manas;
-int mana[4000003];
+int mana[MANA_SIZE];
 
 void manacher() {
   int r = -1, centre = -1;
