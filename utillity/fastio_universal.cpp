@@ -34,7 +34,7 @@ inline namespace Input {
     char ch;
     while (isspace(ch = next_char())) {}
     ret.push_back(ch);
-    while (not isspace(ch = next_char())) ret.push_back(ch);
+    while (not isspace(ch = next_char()) and ch != EOF) ret.push_back(ch);
     return ret;
   }
   
