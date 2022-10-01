@@ -2,20 +2,19 @@
 
 using namespace std;
 
-template <typename T>
-struct Elem {
+template <typename T> struct Elem {
   int i;
   T w;
-  bool operator < (const Elem &o) const {
-    return w != o.w ? w < o.w : i < o.i;
-  }
+  bool operator < (const Elem &o) const { return w != o.w ? w < o.w : i < o.i; }
+  bool operator > (const Elem &o) const { return w != o.w ? w > o.w : i < o.i; }
+  bool operator == (const Elem &o) const { return w == o.w; }
+  bool operator <= (const Elem &o) const { return *this < o or *this == o; }
+  bool operator >= (const Elem &o) const { return *this > o or *this == o; }
 };
 
-template <typename T>
-struct idx_heap {
+template <typename T> struct idx_heap {
   Elem<T> *arr;
-  int *pos;
-  int size;
+  int *pos, size;
 
   idx_heap(int _n) : size(0) {
     arr = new Elem<T>[_n + 1];
@@ -35,24 +34,24 @@ struct idx_heap {
 
   void change(int i, T w) {
     int cur = pos[i];
-    auto k = arr[cur].w;
+    auto k = arr[cur];
     arr[cur].w = w;
-    k < w ? down(cur) : up(cur);
+    k < arr[cur] ? down(cur) : up(cur);
   }
 
   void update(int i, T w) {
     int cur = pos[i];
-    auto k = arr[cur].w;
+    auto k = arr[cur];
     arr[cur].w += w;
-    k < arr[cur].w ? down(cur) : up(cur);
+    k < arr[cur] ? down(cur) : up(cur);
   }
 
   void up(int cur) {
     while (cur > 1) {
-      if (arr[cur].w >= arr[cur / 2].w) break;
+      if (arr[cur] >= arr[cur / 2]) break;
       swap(arr[cur], arr[cur / 2]);
       pos[arr[cur].i] = cur;
-      cur /= 2;
+      cur >>= 1;
     }
     pos[arr[cur].i] = cur;
   }
@@ -60,9 +59,9 @@ struct idx_heap {
   void down(int cur) {
     while (cur * 2 <= size) {
       int mx;
-      if (cur * 2 == size or arr[cur * 2].w < arr[cur * 2 + 1].w) mx = cur * 2;
+      if (cur * 2 == size or arr[cur * 2] < arr[cur * 2 + 1]) mx = cur * 2;
       else mx = cur * 2 + 1;
-      if (arr[cur].w <= arr[mx].w) break;
+      if (arr[cur] <= arr[mx]) break;
       swap(arr[cur], arr[mx]);
       pos[arr[cur].i] = cur;
       cur = mx;
@@ -80,9 +79,9 @@ struct idx_heap {
 
   void del(int i) {
     int cur = pos[i];
-    T k = arr[cur].w;
+    T k = arr[cur];
     arr[cur] = arr[size--];
     pos[arr[cur].i] = cur;
-    k < arr[cur].w ? down(cur) : up(cur);
+    k < arr[cur] ? down(cur) : up(cur);
   }
 };
