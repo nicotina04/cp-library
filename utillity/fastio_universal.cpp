@@ -14,38 +14,31 @@ inline namespace Input {
     if (pos == len) {
       pos = 0;
       len = (int)fread(buf, 1, BUF_SZ, stdin);
-      if (!len) {
-        return EOF;
-      }
+      if (!len) return EOF;
     }
     return buf[pos++];
   }
 
-  long long read_int() {
-    long long x;
+  int_fast64_t read_int() {
+    int_fast64_t x;
     char ch;
     int sgn = 1;
-    while (!isdigit(ch = next_char())) {
-      if (ch == '-') {
-        sgn *= -1;
-      }
-    }
+    while (!isdigit(ch = next_char())) if (ch == '-') sgn *= -1;
     x = ch - '0';
-    while (isdigit(ch = next_char())) {
-      x = x * 10 + (ch - '0');
-    }
+    while (isdigit(ch = next_char())) x = x * 10 + (ch - '0');
     return x * sgn;
   }
-  
+
   string read_string() {
     string ret;
     char ch;
     while (isspace(ch = next_char())) {}
     ret.push_back(ch);
-    while (not isspace(ch = next_char()))
-      ret.push_back(ch);
+    while (not isspace(ch = next_char())) ret.push_back(ch);
     return ret;
   }
+  
+  double read_double() { return stod(read_string());}
 } // namespace Input
 
 inline namespace Output {
@@ -59,26 +52,20 @@ inline namespace Output {
   }
 
   void write_char(char c) {
-    if (pos == BUF_SZ) {
-      flush_out();
-    }
+    if (pos == BUF_SZ) flush_out();
     buf[pos++] = c;
   }
 
-  void write_int(long long x, char delim = '\n') {
+  void write_int(int_fast64_t x, char delim = '\n') {
     static char num_buf[100];
     if (x < 0) {
       write_char('-');
       x *= -1;
     }
     int len = 0;
-    for (; x >= 10; x /= 10) {
-      num_buf[len++] = (char)('0' + (x % 10));
-    }
+    for (; x >= 10; x /= 10) num_buf[len++] = (char)('0' + (x % 10));
     write_char((char)('0' + x));
-    while (len) {
-      write_char(num_buf[--len]);
-    }
+    while (len) write_char(num_buf[--len]);
     write_char(delim);
   }
 
