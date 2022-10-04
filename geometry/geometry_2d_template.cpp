@@ -143,31 +143,31 @@ bool line_equiv(line2<double> &m, line2<double> &n) {
          abs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
 }
 
-template<typename T> struct mvec2 {
+template<typename T> struct vect2 {
   T x, y;
-  mvec2(T _x, T _y) : x(_x), y(_y) {}
-  mvec2() { mvec2(0, 0); }
+  vect2(T _x, T _y) : x(_x), y(_y) {}
+  vect2() { vect2(0, 0); }
 };
 
-template<typename T> mvec2<T> get_mvec2(point2<T> p, point2<T> q) { return {q.x - p.x, q.y - p.y}; }
+template<typename T> vect2<T> get_mvec2(point2<T> p, point2<T> q) { return {q.x - p.x, q.y - p.y}; }
 
-template<typename T, typename U> mvec2<T> mvec2_scalar(mvec2<T> _v, U val) { return {_v.x * val, _v.y * val}; }
+template<typename T, typename U> vect2<T> mvec2_scalar(vect2<T> _v, U val) { return {_v.x * val, _v.y * val}; }
 
-template<typename T, typename U> T cross(mvec2<U> a, mvec2<U> b) { return a.x * b.y - a.y * b.x; }
+template<typename T, typename U> T cross(vect2<U> a, vect2<U> b) { return a.x * b.y - a.y * b.x; }
 
-template<typename T> inline T dot_prod(mvec2<T> &v1, mvec2<T> &v2) { return v1.x * v2.x + v1.y * v2.y; }
+template<typename T> inline T dot_prod(vect2<T> &v1, vect2<T> &v2) { return v1.x * v2.x + v1.y * v2.y; }
 
-template<typename T> inline T norm_sq(mvec2<T> &_v) { return _v.x * _v.x + _v.y * _v.y; }
-
-template<typename T>
-point2<T> point2_translate(point2<T> p, mvec2<ll> _v) { return {p.x + _v.x, p.y + _v.y}; }
+template<typename T> inline T norm_sq(vect2<T> &_v) { return _v.x * _v.x + _v.y * _v.y; }
 
 template<typename T>
-point2<double> point2_translate(point2<T> p, mvec2<double> _v) { return {p.x + _v.x, p.y + _v.y}; }
+point2<T> point2_translate(point2<T> p, vect2<ll> _v) { return {p.x + _v.x, p.y + _v.y}; }
+
+template<typename T>
+point2<double> point2_translate(point2<T> p, vect2<double> _v) { return {p.x + _v.x, p.y + _v.y}; }
 
 template<typename T>
 double dist2line(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
-  mvec2<T> ap = get_mvec2(a, p), ab = get_mvec2(a, b);
+  vect2<T> ap = get_mvec2(a, p), ab = get_mvec2(a, b);
   auto u = (double)dot_prod(ap, ab) / norm_sq(ab);
   c = point2_translate<T>(a, mvec2_scalar(ab, u));
   return hypot(p.x - c.x, p.y - c.y);
@@ -175,7 +175,7 @@ double dist2line(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
 
 template<typename T>
 double dist2segment(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
-  mvec2<T> ap = get_mvec2(a, p), ab = get_mvec2(a, b);
+  vect2<T> ap = get_mvec2(a, p), ab = get_mvec2(a, b);
   auto u = (double)dot_prod(ap, ab) / norm_sq(ab);
   if (u < 0) {
     c.x = a.x, c.y = a.y;
