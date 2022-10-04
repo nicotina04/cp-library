@@ -6,10 +6,9 @@
 using namespace std;
 
 inline namespace Input {
-  const int BUF_SZ = 1 << 17;
+  constexpr int BUF_SZ = 1 << 17;
   char buf[BUF_SZ];
-  int pos;
-  int len;
+  int pos, len;
   char next_char() {
     if (pos == len) {
       pos = 0;
