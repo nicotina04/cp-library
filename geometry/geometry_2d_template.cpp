@@ -67,9 +67,39 @@ vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
   return dh;
 }
 
+template<typename T> bool is_convex(const vector<point2<T>> &pv) {
+  int sz = pv.size();
+  if (sz <= 3) return false;
+  bool is_left = ccw(pv[0], pv[1], pv[2]) == 1;
+  for (int i = 0; i < sz - 1; i++) {
+    if ((ccw(pv[i], pv[i + 1], pv[(i + 2) == sz ? 1 : i + 2]) == 1) != is_left) return false;
+  }
+  return true;
+}
+
+template<typename T> bool in_polygon(point2<T> p, const vector<point2<T>> &pv) {
+  int cnt = 0;
+  for (int i = 0; i < pv.size(); i++) {
+    int j = (i + 1) % pv.size();
+    if (p.y < pv[i].y != p.y < pv[j].y) {
+      auto x = (long double)(pv[j].x - pv[i].x) * (p.y - pv[i].y) / (pv[j].y - pv[i].y) + pv[i].x;
+      if (p.x < x) ++cnt;
+    }
+  }
+  return cnt & 1;
+}
+
+template<typename T> bool in_triangle(point2<T> target, point2<T> a, point2<T> b, point2<T> c) {
+  int ab = ccw(a, b, target);
+  int bc = ccw(b, c, target);
+  int ca = ccw(c, a, target);
+  if (!ab or !bc or !ca) return false; // no allow bound
+  return ab == bc and bc == ca;
+}
+
 template<typename T> struct line2 { T a, b, c; };
 
-bool line_equation(point2<long long> &p, point2<long long> &q, line2<long long> &res) {
+bool line_equation(point2<ll> &p, point2<ll> &q, line2<ll> &res) {
   if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
@@ -130,14 +160,10 @@ template<typename T> inline T dot_prod(mvec2<T> &v1, mvec2<T> &v2) { return v1.x
 template<typename T> inline T norm_sq(mvec2<T> &_v) { return _v.x * _v.x + _v.y * _v.y; }
 
 template<typename T>
-point2<T> point2_translate(point2<T> p, mvec2<ll> _v) {
-  return {p.x + _v.x, p.y + _v.y};
-}
+point2<T> point2_translate(point2<T> p, mvec2<ll> _v) { return {p.x + _v.x, p.y + _v.y}; }
 
 template<typename T>
-point2<double> point2_translate(point2<T> p, mvec2<double> _v) {
-  return {p.x + _v.x, p.y + _v.y};
-}
+point2<double> point2_translate(point2<T> p, mvec2<double> _v) { return {p.x + _v.x, p.y + _v.y}; }
 
 template<typename T>
 double dist2line(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
@@ -178,37 +204,4 @@ bool get_circle_center(point2<T> p1, point2<T> p2, double r, point2<double> &c) 
   c.x = (p1.x + p2.x) * 0.5 + (p1.y - p2.y) * h;
   c.y = (p1.y + p2.y) * 0.5 + (p1.x - p2.x) * h;
   return true;
-}
-
-template<typename T>
-bool is_convex(const vector<point2<T>> &pv) {
-  int sz = pv.size();
-  if (sz <= 3) return false;
-  bool is_left = ccw(pv[0], pv[1], pv[2]) == 1;
-  for (int i = 0; i < sz - 1; i++) {
-    if ((ccw(pv[i], pv[i + 1], pv[(i + 2) == sz ? 1 : i + 2]) == 1) != is_left) return false;
-  }
-  return true;
-}
-
-template<typename T>
-bool in_polygon(point2<T> p, const vector<point2<T>> &pv) {
-  int cnt = 0;
-  for (int i = 0; i < pv.size(); i++) {
-    int j = (i + 1) % pv.size();
-    if (p.y < pv[i].y != p.y < pv[j].y) {
-      auto x = (long double)(pv[j].x - pv[i].x) * (p.y - pv[i].y) / (pv[j].y - pv[i].y) + pv[i].x;
-      if (p.x < x) ++cnt;
-    }
-  }
-  return cnt & 1;
-}
-
-template<typename T>
-bool in_triangle(point2<T> target, point2<T> a, point2<T> b, point2<T> c) {
-  int ab = ccw(a, b, target);
-  int bc = ccw(b, c, target);
-  int ca = ccw(c, a, target);
-  if (!ab or !bc or !ca) return false; // no allow bound
-  return ab == bc and bc == ca;
 }
