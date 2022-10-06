@@ -46,8 +46,8 @@ void add(int node, int start, int end, int l, int r, ll val) {
   if (ptrr == -1) ptrr = tree_size++;
   add(ptrl, start, mid, l, r, val);
   add(ptrr, mid + 1, end, l, r, val);
-  auto lval = ptrl != -1 ? tree[ptrl].sum : 0;
-  auto rval = ptrr != -1 ? tree[ptrr].sum : 0;
+  auto lval = tree[ptrl].sum;
+  auto rval = tree[ptrr].sum;
   tree[node].sum = lval + rval;
 }
 
