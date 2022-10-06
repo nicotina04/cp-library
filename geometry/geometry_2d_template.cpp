@@ -11,8 +11,7 @@ template<typename T> struct point2 {
   bool operator == (const point2<T> &r) const { return (abs(r.x - x) < 1e-9 and abs(r.y - y) < 1e-9); }
 };
 
-template<typename T>
-int ccw(point2<T> p1, point2<T> p2, point2<T> p3) {
+template<typename T> int ccw(point2<T> p1, point2<T> p2, point2<T> p3) {
   T res = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
   if (abs(res) < 1e-9) return 0;
   if (res < 0) return -1;
