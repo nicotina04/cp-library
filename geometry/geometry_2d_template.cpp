@@ -76,6 +76,22 @@ template<typename T> bool is_convex(const vector<point2<T>> &pv) {
   return true;
 }
 
+template<typename T> ll rot_calipers(vector<point2<T>> &hull) {
+  int lo = 0, hi = 0, sz = hull.size();
+  for (int i = 0; i < sz; i++) {
+    if (hull[i] < hull[lo]) lo = i;
+    if (hull[hi] < hull[i]) hi = i;
+  }
+  ll ret = dist_sq(hull[lo], hull[hi]); // define dist square
+  for (int i = 0; i < sz; i++) {
+    int flag = ccw({0, 0}, hull[(lo + 1) % sz] - hull[lo], hull[hi] - hull[(hi + 1) % sz]);
+    if (flag == 1) lo = (lo + 1) % sz;
+    else hi = (hi + 1) % sz;
+    ret = max(ret, dist_sq(hull[lo], hull[hi]));
+  }
+  return ret;
+}
+
 template<typename T> bool in_polygon(point2<T> p, const vector<point2<T>> &pv) {
   int cnt = 0;
   for (int i = 0; i < pv.size(); i++) {
