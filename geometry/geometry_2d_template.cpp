@@ -7,8 +7,8 @@ template<typename T> struct point2 {
   T x, y;
   point2() : x(0), y(0) {}
   point2(T _x, T _y) : x(_x), y(_y) {}
-  bool operator < (const point2<T> &r) const { return x != r.x ? x < r.x : y < r.y; }
-  bool operator == (const point2<T> &r) const { return (abs(r.x - x) < 1e-9 and abs(r.y - y) < 1e-9); }
+  bool operator < (const point2<T> &o) const { return x != o.x ? x < o.x : y < o.y; }
+  bool operator == (const point2<T> &o) const { return (abs(o.x - x) < 1e-9 and abs(o.y - y) < 1e-9); }
 };
 
 template<typename T> int ccw(point2<T> p1, point2<T> p2, point2<T> p3) {
