@@ -43,8 +43,7 @@ template<typename T> point2<double> rot_transform(point2<T> &p, double theta) {
   return point2<double>(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
 
-template<typename T>
-vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
+template<typename T> vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
   int n = pvec.size();
   if (n == 2 and pvec[0] == pvec[1]) pvec.pop_back();
   if (n <= 2) return pvec;
@@ -135,8 +134,7 @@ bool line_equation(point2<double> &p, point2<double> &q, line2<double> &res) {
   return true;
 }
 
-template<typename T>
-bool line_intersect(line2<T> &m, line2<T> &n, point2<double> &res) {
+template<typename T> bool line_intersect(line2<T> &m, line2<T> &n, point2<double> &res) {
   auto zn = det2(m.a, m.b, n.a, n.b);
   if (typeid(T) == typeid(long long)) {
     if (zn == 0) return false;
@@ -203,8 +201,7 @@ double dist2segment(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
   return dist2line(p, a, b, c);
 }
 
-template<typename T>
-double angle(point2<T> a, point2<T> o, point2<T> b) {
+template<typename T> double angle(point2<T> a, point2<T> o, point2<T> b) {
   auto oa = get_mvec2<T>(o, a), ob = get_mvec2<T>(o, b);
   return acos(dot_prod(oa, ob) / sqrt(norm_sq(oa) * norm_sq(ob)));
 }
