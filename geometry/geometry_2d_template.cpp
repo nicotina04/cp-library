@@ -66,16 +66,6 @@ vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
   return dh;
 }
 
-template<typename T> bool is_convex(const vector<point2<T>> &pv) {
-  int sz = pv.size();
-  if (sz <= 3) return false;
-  bool is_left = ccw(pv[0], pv[1], pv[2]) == 1;
-  for (int i = 0; i < sz - 1; i++) {
-    if ((ccw(pv[i], pv[i + 1], pv[(i + 2) == sz ? 1 : i + 2]) == 1) != is_left) return false;
-  }
-  return true;
-}
-
 template<typename T> ll rot_calipers(vector<point2<T>> &hull) {
   int lo = 0, hi = 0, sz = hull.size();
   for (int i = 0; i < sz; i++) {
@@ -90,6 +80,16 @@ template<typename T> ll rot_calipers(vector<point2<T>> &hull) {
     ret = max(ret, dist_sq(hull[lo], hull[hi]));
   }
   return ret;
+}
+
+template<typename T> bool is_convex(const vector<point2<T>> &pv) {
+  int sz = pv.size();
+  if (sz <= 3) return false;
+  bool is_left = ccw(pv[0], pv[1], pv[2]) == 1;
+  for (int i = 0; i < sz - 1; i++) {
+    if ((ccw(pv[i], pv[i + 1], pv[(i + 2) == sz ? 1 : i + 2]) == 1) != is_left) return false;
+  }
+  return true;
 }
 
 template<typename T> bool in_polygon(point2<T> p, const vector<point2<T>> &pv) {
