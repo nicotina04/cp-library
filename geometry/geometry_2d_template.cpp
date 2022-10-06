@@ -38,11 +38,6 @@ template<typename T> double polygon_perimeter(vector<point2<T>> &pvec) {
   return ret;
 }
 
-template<typename T> point2<double> rot_transform(point2<T> &p, double theta) {
-  double rad = theta * acos(-1) / 180.;
-  return point2<double>(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
-}
-
 template<typename T> vector<point2<T>> convexhull(vector<point2<T>> &pvec) {
   int n = pvec.size();
   if (n == 2 and pvec[0] == pvec[1]) pvec.pop_back();
@@ -109,6 +104,11 @@ template<typename T> bool in_triangle(point2<T> target, point2<T> a, point2<T> b
   int ca = ccw(c, a, target);
   if (!ab or !bc or !ca) return false; // no allow bound
   return ab == bc and bc == ca;
+}
+
+template<typename T> point2<double> rot_transform(point2<T> &p, double theta) {
+  double rad = theta * acos(-1) / 180.;
+  return point2<double>(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
 
 template<typename T> struct line2 { T a, b, c; };
