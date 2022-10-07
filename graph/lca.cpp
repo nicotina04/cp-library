@@ -4,12 +4,12 @@ using namespace std;
 
 #define SPAS_LOG 22
 #define SPAS_NODE 1000001
-int spas[SPAS_NODE][SPAS_LOG];
+int spas[SPAS_LOG][SPAS_NODE];
 int h[SPAS_NODE];
 void do_spas() {
   for (int i = 1; i < SPAS_LOG; ++i) {
     for (int j = 1; j < SPAS_NODE; ++j) {
-      spas[j][i] = spas[spas[j][i - 1]][i - 1];
+      spas[i][j] = spas[i - 1][spas[i - 1][j]];
     }
   }
 }
