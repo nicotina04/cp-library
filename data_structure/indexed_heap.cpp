@@ -69,8 +69,8 @@ template <typename T> struct idx_heap {
     pos[arr[cur].i] = cur;
   }
 
-  T pop() {
-    T ret = arr[1].i;
+  int pop() {
+    int ret = arr[1].i;
     arr[1] = arr[size--];
     pos[arr[1].i] = 1;
     down(1);
