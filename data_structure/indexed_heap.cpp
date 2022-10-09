@@ -79,7 +79,7 @@ template <typename T> struct idx_heap {
 
   void del(int i) {
     int cur = pos[i];
-    T k = arr[cur];
+    auto k = arr[cur];
     arr[cur] = arr[size--];
     pos[arr[cur].i] = cur;
     k < arr[cur] ? down(cur) : up(cur);
