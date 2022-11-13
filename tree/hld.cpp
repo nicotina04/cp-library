@@ -22,8 +22,8 @@ ll query_hld(int a, int b) {
   auto ret = 0;
   while (top[a] != top[b]) {
     if (depth[top[a]] < depth[top[b]]) swap(a, b);
-    int stt = top[a];
     // ret ?= query [in(stt), in(a)]
+    int stt = top[a];
     a = parent[stt];
   }
   if (depth[a] > depth[b]) swap(a, b);
