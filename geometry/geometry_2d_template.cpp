@@ -3,17 +3,19 @@
 using namespace std;
 using ll = int_fast64_t;
 
+using ftype = double;
+constexpr ftype eps = 1e-9;
 template<typename T> struct point2 {
   T x, y;
   point2() : x(0), y(0) {}
   point2(T _x, T _y) : x(_x), y(_y) {}
   bool operator < (const point2<T> &o) const { return x != o.x ? x < o.x : y < o.y; }
-  bool operator == (const point2<T> &o) const { return (abs(o.x - x) < 1e-9 and abs(o.y - y) < 1e-9); }
+  bool operator == (const point2<T> &o) const { return (abs(o.x - x) < eps and abs(o.y - y) < eps); }
 };
 
 template<typename T> int ccw(point2<T> p1, point2<T> p2, point2<T> p3) {
   T res = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
-  if (abs(res) < 1e-9) return 0;
+  if (abs(res) < eps) return 0;
   if (res < 0) return -1;
   return 1;
 }
@@ -106,9 +108,9 @@ template<typename T> bool in_triangle(point2<T> target, point2<T> a, point2<T> b
   return ab == bc and bc == ca;
 }
 
-template<typename T> point2<double> rot_transform(point2<T> &p, double theta) {
+template<typename T> point2<ftype> rot_transform(point2<T> &p, double theta) {
   double rad = theta * acos(-1) / 180.;
-  return point2<double>(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
+  return point2<ftype>(p.x * cos(rad) - p.y * sin(rad), p.x * sin(rad) + p.y * cos(rad));
 }
 
 template<typename T> struct line2 { T a, b, c; };
@@ -124,36 +126,34 @@ bool line_equation(point2<ll> &p, point2<ll> &q, line2<ll> &res) {
   return true;
 }
 
-bool line_equation(point2<double> &p, point2<double> &q, line2<double> &res) {
+bool line_equation(point2<ftype> &p, point2<ftype> &q, line2<ftype> &res) {
   if (p == q) return false;
   auto a = p.y - q.y, b = q.x - p.x;
   auto c = -a * p.x - b * p.y;
   auto de = sqrt(a * a + b * b);
   a /= de, b /= de, c /= de;
-  if (a <= -1e-9 or (abs(a) < 1e-9 and b <= -1e-9)) a = -a, b = -b, c = -c;
+  if (a <= -eps or (abs(a) < eps and b <= -eps)) a = -a, b = -b, c = -c;
   return true;
 }
 
-template<typename T> bool line_intersect(line2<T> &m, line2<T> &n, point2<double> &res) {
+template<typename T> bool line_intersect(line2<T> &m, line2<T> &n, point2<ftype> &res) {
   auto zn = det2(m.a, m.b, n.a, n.b);
   if (typeid(T) == typeid(long long)) {
     if (zn == 0) return false;
-  } else {
-    if (abs(zn) < 1e-9) return false;
-  }
+  } else if (abs(zn) < eps) return false;
   res.x = -det2(m.c, m.b, n.c, n.b) / zn;
   res.y = -det2(m.a, m.c, n.a, n.c) / zn;
   return true;
 }
 
 bool line_parallel(line2<ll> &m, line2<ll> &n) { return m.a == n.a and m.b == n.b; }
-bool line_parallel(line2<double> &m, line2<double> &n) { return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9; }
+bool line_parallel(line2<ftype> &m, line2<ftype> &n) { return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9; }
 
 bool line_equiv(line2<ll> &m, line2<ll> &n) { return !det2(m.a, m.b, n.a, n.b) and !det2(m.a, m.c, n.a, n.c) and !det2(m.b, m.c, n.b, n.c); }
-bool line_equiv(line2<double> &m, line2<double> &n) {
-  return abs(det2(m.a, m.b, n.a, n.b)) < 1e-9 and
-         abs(det2(m.a, m.c, n.a, n.c)) < 1e-9 and
-         abs(det2(m.b, m.c, n.b, n.c)) < 1e-9;
+bool line_equiv(line2<ftype> &m, line2<ftype> &n) {
+  return abs(det2(m.a, m.b, n.a, n.b)) < eps and
+         abs(det2(m.a, m.c, n.a, n.c)) < eps and
+         abs(det2(m.b, m.c, n.b, n.c)) < eps;
 }
 
 template<typename T> struct vect2 {
@@ -176,20 +176,20 @@ template<typename T>
 point2<T> point2_translate(point2<T> p, vect2<ll> _v) { return {p.x + _v.x, p.y + _v.y}; }
 
 template<typename T>
-point2<double> point2_translate(point2<T> p, vect2<double> _v) { return {p.x + _v.x, p.y + _v.y}; }
+point2<ftype> point2_translate(point2<T> p, vect2<ftype> _v) { return {p.x + _v.x, p.y + _v.y}; }
 
 template<typename T>
-double dist2line(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
+ftype dist2line(point2<T> p, point2<T> a, point2<T> b, point2<ftype> &c) {
   vect2<T> ap = get_mvec2(a, p), ab = get_mvec2(a, b);
-  auto u = (double)dot_prod(ap, ab) / norm_sq(ab);
+  auto u = (ftype)dot_prod(ap, ab) / norm_sq(ab);
   c = point2_translate<T>(a, mvec2_scalar(ab, u));
   return hypot(p.x - c.x, p.y - c.y);
 }
 
 template<typename T>
-double dist2segment(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
+ftype dist2segment(point2<T> p, point2<T> a, point2<T> b, point2<ftype> &c) {
   vect2<T> ap = get_mvec2(a, p), ab = get_mvec2(a, b);
-  auto u = (double)dot_prod(ap, ab) / norm_sq(ab);
+  auto u = (ftype)dot_prod(ap, ab) / norm_sq(ab);
   if (u < 0) {
     c.x = a.x, c.y = a.y;
     return hypot(p.x - a.x, p.y - a.y);
@@ -201,18 +201,45 @@ double dist2segment(point2<T> p, point2<T> a, point2<T> b, point2<double> &c) {
   return dist2line(p, a, b, c);
 }
 
+inline bool intersect_1d(ftype a, ftype b, ftype c, ftype d) {
+  if (a > b) swap(a, b); if (c > d) swap(c, d);
+  return max(a, c) <= min(b, d) + eps;
+}
+
+inline bool betw(ftype l, ftype r, ftype x) { return min(l, r) <= x + eps and x <= max(l, r) + eps; }
+
+template<typename T> bool segment_intersect(point2<T> a, point2<T> b, point2<T> c, point2<T> d, point2<ftype> &left, point2<ftype> &right) {
+  if (!intersect_1d(a.x, b.x, c.x, d.x) or !intersect_1d(a.y, b.y, c.y, d.y)) return false;
+  line2<ftype> n, m;
+  line_equation(a, b, m); line_equation(c, d, n);
+  ftype zn = det2(m.a, m.b, n.a, n.b);
+  point2<ftype> tmp;
+  if (abs(zn) < eps) {
+    if (dist2line(c, a, b, tmp) > eps or dist2line(a, c, d, tmp) > eps) return false;
+    if (b < a) swap(a, b);
+    if (d < c) swap(c, d);
+    left = max(a, c), right = min(b, d);
+    return true;
+  } else {
+    left.x = right.x = -det2(m.c, m.b, n.c, n.b) / zn;
+    left.y = right.y = -det2(m.a, m.c, n.a, n.c) / zn;
+    return betw(a.x, b.x, left.x) and betw(a.y, b.y, left.y) and
+           betw(c.x, d.x, left.x) and betw(c.y, d.y, left.y);
+  }
+}
+
 template<typename T> double angle(point2<T> a, point2<T> o, point2<T> b) {
   auto oa = get_mvec2<T>(o, a), ob = get_mvec2<T>(o, b);
   return acos(dot_prod(oa, ob) / sqrt(norm_sq(oa) * norm_sq(ob)));
 }
 
 template<typename T>
-bool get_circle_center(point2<T> p1, point2<T> p2, double r, point2<double> &c) {
+bool get_circle_center(point2<T> p1, point2<T> p2, ftype r, point2<ftype> &c) {
   // When need opposing center, swap points
-  double d2 = (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
-  double det = r * r / d2 - 0.25;
+  auto d2 = (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+  auto det = r * r / d2 - 0.25;
   if (det < 0.) return false;
-  double h = sqrt(det);
+  auto h = sqrt(det);
   c.x = (p1.x + p2.x) * 0.5 + (p1.y - p2.y) * h;
   c.y = (p1.y + p2.y) * 0.5 + (p1.x - p2.x) * h;
   return true;
